@@ -6,12 +6,6 @@ html {
   @apply font-sans;
 }
 
-  
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-  @tailwind variants;
-  
   html, * {
     scroll-behavior: smooth;
     @apply font-sans;
@@ -69,4 +63,28 @@ html {
 
   .input-padrao {
     @apply border w-full border-blue-200 outline-none focus:border-blue-500 rounded-md p-2 text-sm;
+  }
+
+  .button {
+    @apply py-1 px-4 rounded font-semibold;
+  }
+
+  .slide-in-right {
+    animation: slideInRight 200ms ease-out forwards;
+  }
+  .slide-back-right {
+    animation: slideInRight 200ms ease-out reverse;
+  }
+  
+  
+  /* Definindo a animação */
+  @keyframes slideInRight {
+    0% {
+      transform: translateX(100%); /* Começa fora da tela pela direita */
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0); /* Elemento entra na tela */
+      opacity: 1;
+    }
   }

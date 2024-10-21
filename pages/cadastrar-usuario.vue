@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col justify-center items-center w-screen h-screen">
     <div class="flex flex-col items-center justify-center">
-      <img :src="Logo" class="w-20 h-20" />
+      <img src="/images/logo-poggers.webp" class="w-20 h-20" />
       <h1 class="text-xl font-bold">
         Primeiro acesso <span class="text-green-500">aqui</span> ?
       </h1>
@@ -9,29 +9,68 @@
         >Preencha as informação abaixo para se cadastrar</span
       >
 
+    <form class="w-full" @submit.prevent="submitCadastroUsuario">
      <label class="label-column">
           Email
-         <input placeholder="" id="email" class="input-padrao" />
+         <input v-model="email" placeholder="" type="email" class="input-padrao" required />
      </label>
      <label class="label-column">
           Senha
-         <input placeholder="" id="email" class="input-padrao" />
+         <input v-model="senha" placeholder="" :type="visibilidadeSenha" class="input-padrao" required />
      </label>
      <label class="label-column">
           Confirmar senha
-         <input placeholder="" id="email" class="input-padrao" />
+         <input v-model="senhaConfirmacao" :type="visibilidadeSenha" placeholder="" class="input-padrao" required />
      </label>
-      <input class="" />
+     <label class="label-column">
+          32 + 37?
+         <input v-model="resVerificacao"  placeholder=""  class="input-padrao" required />
+     </label>
+     <div class="flex w-full justify-end gap-4">
+       <button class="text-neutral-400 hover:bg-gray-100 button" @click="() => navigateTo({path: 'login'})">Voltar</button>
+       <button class="bg-blue-600 text-white hover:bg-blue-700 button">Cadastrar</button>
+     </div>
+    </form>
     </div>
+    <Toast v-if="mostrarToast" :texto="textoToast" :status="tipoToast"/>
   </div>
 </template>
 
 <script setup>
-import Logo from "@/assets/images/logo-poggers.webp";
 
-onMounted(() => {
-  console.log("oiii");
+import Toast from '~/components/alerts/Toast.vue';
+
+const email = ref('');
+const senha = ref('');
+const senhaConfirmacao = ref('');
+const resVerificacao = ref('');
+const senhaVisivel = ref(false);
+const textoToast = ref('');
+const mostrarToast = ref(false);
+const tipoToast = ref('');
+
+const visibilidadeSenha = computed(() => {
+  return senhaVisivel.value ? 'text' : 'password'
 });
+
+const submitCadastroUsuario = () => {
+  if(!(senha.value === senhaConfirmacao.value)){
+    tipoToast.value = 'Erro'
+    textoToast.value = ('As senhas informadas não são iguais!');
+  }
+  else if(resVerificacao.value != 69){   
+    tipoToast.value = 'Erro'
+    textoToast.value = ('Oops, parace que você errou uma soma basica.');
+  }
+  else {
+    tipoToast.value = 'Sucesso';
+    textoToast.value = ('Usuário cadastrado com sucesso');
+  }
+
+  mostrarToast.value = true;
+
+}
+
 </script>
 
 
