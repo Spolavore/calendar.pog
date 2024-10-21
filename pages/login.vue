@@ -28,7 +28,7 @@ const senhaVisivel = ref(false);
 
 // Computed Properties
 const IconeVisibilidade = computed(() => {
-  return senhaVisivel.value ? "/icons/visibility.svg" : "/icons/visibility_off.svg"
+  return senhaVisivel.value ?  "/icons/visibility_off.svg" : "/icons/visibility.svg"
 });
 
 const visibilidadeSenha = computed(() => { 
