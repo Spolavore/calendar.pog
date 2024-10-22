@@ -10,6 +10,10 @@
       >
 
     <form class="w-full" @submit.prevent="submitCadastroUsuario">
+      <label class="label-column">
+          Nome
+         <input v-model="nome" placeholder=""  class="input-padrao" required />
+     </label>
      <label class="label-column">
           Email
          <input v-model="email" placeholder="" type="email" class="input-padrao" required />
@@ -39,7 +43,10 @@
 <script setup>
 
 import Toast from '~/components/alerts/Toast.vue';
+import RequestService from '~/services/RequestService';
+import api from "~/utils/Constants";
 
+const nome = ref('');
 const email = ref('');
 const senha = ref('');
 const senhaConfirmacao = ref('');
@@ -53,22 +60,40 @@ const visibilidadeSenha = computed(() => {
   return senhaVisivel.value ? 'text' : 'password'
 });
 
-const submitCadastroUsuario = () => {
+const submitCadastroUsuario = async () => {
   if(!(senha.value === senhaConfirmacao.value)){
     tipoToast.value = 'Erro'
     textoToast.value = ('As senhas informadas não são iguais!');
+    mostrarToast.value = true;
   }
   else if(resVerificacao.value != 69){   
     tipoToast.value = 'Erro'
     textoToast.value = ('Oops, parace que você errou uma soma basica.');
+    mostrarToast.value = true;
   }
   else {
-    tipoToast.value = 'Sucesso';
-    textoToast.value = ('Usuário cadastrado com sucesso');
+    await cadastrarUsuario();  
   }
+}
 
-  mostrarToast.value = true;
-
+const cadastrarUsuario = async () => {
+  const options = {
+    url: api.cadastrar_usuario,
+    data: {
+      nome: nome.value,
+      email: email.value,
+      senha: senha.value
+    },
+    callback: (response) => {
+      tipoToast.value = 'Sucesso';
+      textoToast.value = ('Usuário cadastrado com sucesso');
+      mostrarToast.value = true
+    },
+    errorCallback: (error) => {
+      console.error(error);
+    }
+  }
+  await RequestService.postRequest(options);
 }
 
 </script>
