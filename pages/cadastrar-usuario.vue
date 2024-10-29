@@ -1,5 +1,16 @@
 <template>
-  <div class="flex flex-col justify-center items-center w-screen h-screen">
+  <div
+    v-if="true"
+    class="w-screen h-screen bg-white flex items-center justify-center"
+  >
+  <NuxtImg 
+    width="250"
+    src="/images/email-verificacao.png"
+    />
+  </div>
+  <div 
+    v-else
+    class="flex flex-col justify-center items-center w-screen h-screen">
     <div class="flex flex-col items-center justify-center">
       <img src="/images/logo-poggers.webp" class="w-20 h-20" />
       <h1 class="text-xl font-bold">
@@ -55,6 +66,7 @@ const senhaVisivel = ref(false);
 const textoToast = ref('');
 const mostrarToast = ref(false);
 const tipoToast = ref('');
+const showVerificarEmail = ref(false);
 
 const visibilidadeSenha = computed(() => {
   return senhaVisivel.value ? 'text' : 'password'
@@ -84,16 +96,23 @@ const cadastrarUsuario = async () => {
       email: email.value,
       senha: senha.value
     },
-    callback: (response) => {
-      tipoToast.value = 'Sucesso';
-      textoToast.value = ('Usuário cadastrado com sucesso');
-      mostrarToast.value = true
+    callback: () => {
+      resetarCampos();
+      showVerificarEmail.value = true;
     },
     errorCallback: (error) => {
       console.error(error);
     }
   }
   await RequestService.postRequest(options);
+}
+
+const resetarCampos = () => {
+   nome.value = ''
+   email.value = ''
+   senha.value = ''
+   senhaConfirmacao.value = ''
+   resVerificacao.value = ''
 }
 
 </script>
